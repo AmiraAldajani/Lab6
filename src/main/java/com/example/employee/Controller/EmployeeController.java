@@ -56,15 +56,13 @@ public class EmployeeController {
     }
     @DeleteMapping("/delete/{ID}")
     public ResponseEntity<?> deleteEmployee(@PathVariable String ID){
-        flag = false;
-        for ( Employee e : employees ){
-            if ( ID.equals(e.getID())) {
-                employees.remove(e); flag = true;
+        for ( Employee e : employees ) {
+            if (ID.equals(e.getID())) {
+                employees.remove(e);
+                return ResponseEntity.status(200).body("Employee Deleted");
             }
-        } if (flag)
-            return ResponseEntity.status(200).body("Employee Deleted");
-        else
-            return ResponseEntity.status(400).body("Employee with that ID does not exist");
+        }
+        return ResponseEntity.status(400).body("Employee with that ID does not exist");
     }
     @GetMapping("/getbyposition/{position}")
     public ResponseEntity<?> getByPosition(@PathVariable String position){
@@ -82,8 +80,11 @@ public class EmployeeController {
     }
     @GetMapping("/getbyage/{min}/{max}")
     public ResponseEntity<?> getByAge(@PathVariable int min, @PathVariable int max){
-        if ( min <25 || max >99 ){
-            return ResponseEntity.status(400).body("Age range is invalid. min is 26 and max is 99.");
+        if ( max >99 ){
+            return ResponseEntity.status(400).body("Age range is invalid. max is 99.");
+        }
+        if ( min <25 ){
+            return ResponseEntity.status(400).body("Age range is invalid. min is 26.");
         }
         ArrayList<Employee> empByAge = new ArrayList<>();
         for ( Employee e : employees ){
@@ -91,7 +92,7 @@ public class EmployeeController {
                 empByAge.add(e);
         }
         if ( empByAge.isEmpty())
-            return ResponseEntity.status(200).body("Employees and that age range do not exist.");
+            return ResponseEntity.status(200).body("Employees in that age range do not exist.");
         return ResponseEntity.status(200).body(empByAge);
     }
 
