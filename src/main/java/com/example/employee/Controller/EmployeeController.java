@@ -45,7 +45,7 @@ public class EmployeeController {
         for ( Employee e : employees ){
             if ( e.getID().equals(employee.getID())) {
                 flag = true;
-                employees.remove(e);
+                employees.remove(e); //.SET !
                 employees.add(employee);
             }
         }
